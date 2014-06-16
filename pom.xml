@@ -270,6 +270,44 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>openshift</id>
+            <dependencies>
+                <dependency>
+                    <groupId>javax</groupId>
+                    <artifactId>javaee-api</artifactId>
+                    <version>${version.javaee}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>integration-test</id>
+                                <phase>integration-test</phase>
+                                <configuration>
+                                    <skip>true</skip>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>${version.maven.war.plugin}</version>
+                        <configuration>
+                            <outputDirectory>deployments</outputDirectory>
+                            <warName>ROOT</warName>
+                        </configuration>
+                    </plugin>                    
+                    
+                </plugins>
+            </build>
+        </profile>
 
     </profiles>
 
@@ -316,7 +354,7 @@
                             <argLine>${surefire.argLine}</argLine>
                             <forkMode>once</forkMode>
                             <excludes>
-                              <exclude>**/*IT.java</exclude>
+                                <exclude>**/*IT.java</exclude>
                             </excludes>
                         </configuration>
                     </execution>
@@ -327,12 +365,12 @@
                             <goal>test</goal>
                         </goals>
                         <configuration>
-                          <skip>false</skip>
-                          <argLine>${it.surefire.argLine}</argLine>
-                          <forkMode>once</forkMode>
-                          <includes>
-                            <include>**/*IT.java</include>
-                          </includes>                                  
+                            <skip>false</skip>
+                            <argLine>${it.surefire.argLine}</argLine>
+                            <forkMode>once</forkMode>
+                            <includes>
+                                <include>**/*IT.java</include>
+                            </includes>                                  
                         </configuration>
                     </execution>
                 </executions>
