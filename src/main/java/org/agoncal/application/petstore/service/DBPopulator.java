@@ -20,12 +20,11 @@ import javax.inject.Inject;
 @Startup
 @Loggable
 @DataSourceDefinition(
-        className = "org.apache.derby.jdbc.EmbeddedDataSource",
+        className = "org.h2.jdbcx.JdbcDataSource",
         name = "java:global/jdbc/applicationPetstoreDS",
-        user = "app",
-        password = "app",
-        databaseName = "applicationPetstoreDB",
-        properties = {"connectionAttributes=;create=true"}
+        url = "jdbc:h2:${jboss.server.data.dir}/petstore;DB_CLOSE_DELAY=-1",
+        user = "sa",
+        password = ""
 )
 public class DBPopulator {
 
