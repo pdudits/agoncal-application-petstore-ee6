@@ -379,6 +379,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>${version.maven.war.plugin}</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Dependencies>com.h2database.h2 services</Dependencies>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
             </plugin>
             <!-- Run mvn clean package embedded-glassfish:run -->
             <!-- and go to http://localhost:8080/applicationPetstore/ -->
