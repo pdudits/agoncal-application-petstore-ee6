@@ -1,17 +1,21 @@
 package org.agoncal.application.petstore.web;
 
-import org.agoncal.application.petstore.domain.Customer;
-import org.agoncal.application.petstore.service.CustomerService;
-import org.agoncal.application.petstore.util.Loggable;
+import java.io.Serializable;
 
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
-import java.io.Serializable;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.agoncal.application.petstore.domain.Customer;
+import org.agoncal.application.petstore.service.CustomerService;
+import org.agoncal.application.petstore.util.Loggable;
 
 /**
  * @author Antonio Goncalves
@@ -42,15 +46,11 @@ public class AccountController extends Controller implements Serializable {
     @LoggedIn
     private Customer loggedinCustomer;
 
-    @Inject
-    @SessionScoped
-    private transient LoginContext loginContext;
-
     // ======================================
     // =              Public Methods        =
     // ======================================
 
-    public String doLogin() throws LoginException {
+    public String doLogin() throws LoginException, ServletException {
         if ("".equals(credentials.getLogin())) {
             addWarningMessage("id_filled");
             return null;
@@ -59,8 +59,7 @@ public class AccountController extends Controller implements Serializable {
             addWarningMessage("pwd_filled");
             return null;
         }
-
-        loginContext.login();
+        ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).login(credentials.getLogin(), credentials.getPassword());
         loggedinCustomer = customerService.findCustomer(credentials.getLogin());
         return "main.faces";
     }
